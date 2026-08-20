@@ -4,10 +4,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { MessagesSquare } from "lucide-react";
 import {
-  getMyRoleContext, listUnits, listPosts, createPost, deletePost,
+  getMyRoleContext, listUnits, listPosts, createPost, deletePost, getRsvpSummary,
   POST_KINDS, type PostKind, type CaucusLevel,
 } from "@/lib/forum.functions";
 import { EmptyState, LoadingCard } from "@/components/portal/empty-state";
+import { EventRsvpButton } from "@/components/portal/event-rsvp-button";
 
 export const Route = createFileRoute("/_authenticated/portal/forum")({
   head: () => ({ meta: [{ title: "Forum — Feathers Community Forum" }] }),
@@ -41,10 +42,17 @@ function ForumPage() {
   const fetchPosts = useServerFn(listPosts);
   const create = useServerFn(createPost);
   const del = useServerFn(deletePost);
+  const fetchRsvps = useServerFn(getRsvpSummary);
 
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
+  const eventIds = (postsQ.data ?? []).filter((p) => p.kind === "event").map((p) => p.id);
+  const rsvpQ = useQuery({
+    queryKey: ["rsvp-summary", eventIds],
+    queryFn: () => fetchRsvps({ data: { postIds: eventIds } }),
+    enabled: eventIds.length > 0,
+  });
 
   const [filter, setFilter] = useState<PostKind | "all">("all");
 
@@ -208,6 +216,15 @@ function ForumPage() {
                       {p.event_starts_at && new Date(p.event_starts_at).toLocaleString()}
                       {p.event_location && ` · ${p.event_location}`}
                     </p>
+                  )}
+                  {p.kind === "event" && (
+                    <div className="mt-3">
+                      <EventRsvpButton
+                        postId={p.id}
+                        count={rsvpQ.data?.[p.id]?.count ?? 0}
+                        mine={rsvpQ.data?.[p.id]?.mine ?? false}
+                      />
+                    </div>
                   )}
                 </li>
               );

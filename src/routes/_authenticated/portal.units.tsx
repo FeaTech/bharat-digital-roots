@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Network } from "lucide-react";
 import {
   getMyRoleContext, listUnits, createUnit, deleteUnit,
-  listAdminAssignments, assignAdmin, revokeAdmin,
+  listAdminAssignments, assignAdmin, revokeAdmin, listPosts,
   LEVEL_LIST, ROLE_LIST, type CaucusLevel,
 } from "@/lib/forum.functions";
 import { EmptyState, LoadingCard } from "@/components/portal/empty-state";
@@ -25,6 +25,7 @@ function UnitsPage() {
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchUnits = useServerFn(listUnits);
   const fetchAssignments = useServerFn(listAdminAssignments);
+  const fetchPosts = useServerFn(listPosts);
   const create = useServerFn(createUnit);
   const del = useServerFn(deleteUnit);
   const assign = useServerFn(assignAdmin);
@@ -33,6 +34,7 @@ function UnitsPage() {
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
   const assignQ = useQuery({ queryKey: ["assignments"], queryFn: () => fetchAssignments() });
+  const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
 
   const [level, setLevel] = useState<CaucusLevel>("continent");
   const [name, setName] = useState("");
@@ -83,6 +85,20 @@ function UnitsPage() {
             <p className="mt-1 font-serif text-2xl text-brand-ink">{units.filter((u) => u.level === l).length}</p>
           </div>
         ))}
+      </div>
+
+      {/* Admins assigned / posts this week */}
+      <div className="grid grid-cols-2 gap-3 max-w-md">
+        <div className="rounded-xl bg-white ring-1 ring-brand-ink/10 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-wider text-brand-ink/50 font-semibold">Admins assigned</p>
+          <p className="mt-1 font-serif text-2xl text-brand-ink">{(assignQ.data ?? []).length}</p>
+        </div>
+        <div className="rounded-xl bg-white ring-1 ring-brand-ink/10 p-3 text-center">
+          <p className="text-[10px] uppercase tracking-wider text-brand-ink/50 font-semibold">Posts this week</p>
+          <p className="mt-1 font-serif text-2xl text-brand-ink">
+            {(postsQ.data ?? []).filter((p) => Date.now() - new Date(p.created_at).getTime() <= 7 * 24 * 60 * 60 * 1000).length}
+          </p>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">

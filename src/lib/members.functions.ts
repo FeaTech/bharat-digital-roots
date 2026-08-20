@@ -23,6 +23,7 @@ export type MemberRow = {
   joined_at: string;
   expires_at: string | null;
   status: "pending" | "approved" | "rejected";
+  branch_unit_id: string | null;
 };
 
 const profileSchema = z.object({
@@ -266,7 +267,42 @@ export const approveMember = createServerFn({ method: "POST" })
       console.error("Failed to send approval email:", err);
     }
 
+    const { logAudit } = await import("@/lib/audit.server");
+    void logAudit(supabaseAdmin, {
+      actorId: context.userId,
+      action: "member.approve",
+      targetType: "members",
+      targetId: data.memberId,
+      detail: { email: member.email, planId, amountInr },
+    });
+
     return { approved: true, email: member.email, tempPassword };
+  });
+
+export const assignMemberBranch = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) =>
+    z.object({ memberId: z.string().uuid(), unitId: z.string().uuid().nullable() }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("members")
+      .update({ branch_unit_id: data.unitId })
+      .eq("id", data.memberId);
+    if (error) throw new Error(error.message);
+
+    const { logAudit } = await import("@/lib/audit.server");
+    void logAudit(supabaseAdmin, {
+      actorId: context.userId,
+      action: "member.assign_branch",
+      targetType: "members",
+      targetId: data.memberId,
+      detail: { unitId: data.unitId },
+    });
+
+    return { ok: true };
   });
 
 export const rejectMember = createServerFn({ method: "POST" })
@@ -280,5 +316,14 @@ export const rejectMember = createServerFn({ method: "POST" })
       .update({ status: "rejected" })
       .eq("id", data.memberId);
     if (error) throw new Error(error.message);
+
+    const { logAudit } = await import("@/lib/audit.server");
+    void logAudit(supabaseAdmin, {
+      actorId: context.userId,
+      action: "member.reject",
+      targetType: "members",
+      targetId: data.memberId,
+    });
+
     return { rejected: true };
   });

@@ -3,9 +3,10 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Newspaper } from "lucide-react";
 import { getMyMember } from "@/lib/members.functions";
-import { getMyRoleContext, listUnits, listPosts } from "@/lib/forum.functions";
+import { getMyRoleContext, listUnits, listPosts, getRsvpSummary } from "@/lib/forum.functions";
 import { planName, planNameShort } from "@/lib/plans";
 import { LoadingCard, EmptyState } from "@/components/portal/empty-state";
+import { EventRsvpButton } from "@/components/portal/event-rsvp-button";
 
 export const Route = createFileRoute("/_authenticated/portal/id")({
   head: () => ({ meta: [{ title: "My ID — Feathers Community Forum" }] }),
@@ -17,11 +18,21 @@ function MyId() {
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchUnits = useServerFn(listUnits);
   const fetchPosts = useServerFn(listPosts);
+  const fetchRsvps = useServerFn(getRsvpSummary);
   const memberQ = useQuery({ queryKey: ["my-member"], queryFn: () => fetchMember() });
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
-
+  const now = Date.now();
+  const upcomingIds = (postsQ.data ?? [])
+    .filter((p) => p.kind === "event" && p.event_starts_at && new Date(p.event_starts_at).getTime() >= now)
+    .slice(0, 5)
+    .map((p) => p.id);
+  const rsvpQ = useQuery({
+    queryKey: ["rsvp-summary", upcomingIds],
+    queryFn: () => fetchRsvps({ data: { postIds: upcomingIds } }),
+    enabled: upcomingIds.length > 0,
+  });
 
   if (memberQ.isLoading) {
     return <div className="max-w-4xl mx-auto p-6"><LoadingCard /></div>;
@@ -32,7 +43,6 @@ function MyId() {
   const ctx = ctxQ.data;
   const branches = (unitsQ.data ?? []).filter((u) => u.level === "branch");
   const posts = postsQ.data ?? [];
-  const now = Date.now();
   const upcoming = posts
     .filter((p) => p.kind === "event" && p.event_starts_at && new Date(p.event_starts_at).getTime() >= now)
     .slice(0, 5);
@@ -137,6 +147,13 @@ function MyId() {
                     {p.event_starts_at && new Date(p.event_starts_at).toLocaleString()}
                     {p.event_location ? ` · ${p.event_location}` : ""}
                   </p>
+                  <div className="mt-2">
+                    <EventRsvpButton
+                      postId={p.id}
+                      count={rsvpQ.data?.[p.id]?.count ?? 0}
+                      mine={rsvpQ.data?.[p.id]?.mine ?? false}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

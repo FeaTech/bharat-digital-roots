@@ -1,19 +1,12 @@
-REVOKE EXECUTE ON FUNCTION public.set_tenant_id_from_membership() FROM PUBLIC, anon, authenticated;
-REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
-REVOKE EXECUTE ON FUNCTION public.update_updated_at_column() FROM PUBLIC, anon, authenticated;
-
-REVOKE EXECUTE ON FUNCTION public.has_role(uuid, app_role) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.is_platform_admin(uuid) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.is_tenant_member(uuid, uuid) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.has_tenant_role(uuid, uuid, tenant_role) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.is_user_approved(uuid) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.record_user_login_event(uuid, text, text, text, text, text, text, jsonb) FROM PUBLIC, anon;
-REVOKE EXECUTE ON FUNCTION public.admin_get_user_login_history(uuid, text, integer) FROM PUBLIC, anon;
-
-GRANT EXECUTE ON FUNCTION public.has_role(uuid, app_role) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.is_platform_admin(uuid) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.is_tenant_member(uuid, uuid) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.has_tenant_role(uuid, uuid, tenant_role) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.is_user_approved(uuid) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.record_user_login_event(uuid, text, text, text, text, text, text, jsonb) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.admin_get_user_login_history(uuid, text, integer) TO authenticated;
+-- This migration originally REVOKEd/GRANTed privileges on functions and a
+-- `tenant_role` type (is_platform_admin, is_tenant_member, has_tenant_role,
+-- is_user_approved, record_user_login_event, admin_get_user_login_history,
+-- handle_new_user, set_tenant_id_from_membership, update_updated_at_column)
+-- carried over from an earlier multi-tenant template. None of those objects
+-- are created anywhere in this project's migration history, so replaying
+-- this migration against a fresh database (supabase db reset, a new
+-- environment) failed on its very first statement.
+--
+-- Neutralized to a no-op. The objects that do exist in this schema
+-- (has_role, is_senate, etc.) have their own REVOKE/GRANT statements set
+-- where they are actually created, later in this migration history.

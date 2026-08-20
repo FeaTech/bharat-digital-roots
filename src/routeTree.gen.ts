@@ -9,90 +9,45 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WingsRouteImport } from './routes/wings'
-import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
-import { Route as SetPasswordRouteImport } from './routes/set-password'
-import { Route as MembershipRouteImport } from './routes/membership'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as FesyaRouteImport } from './routes/fesya'
-import { Route as FeswaRouteImport } from './routes/feswa'
-import { Route as FeaRouteImport } from './routes/fea'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutFounderRouteImport } from './routes/about-founder'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
-import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
-import { Route as AuthenticatedForumRouteImport } from './routes/_authenticated/forum'
-import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin-messages'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AboutFounderRouteImport } from './routes/about-founder'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FeaRouteImport } from './routes/fea'
+import { Route as FeswaRouteImport } from './routes/feswa'
+import { Route as FesyaRouteImport } from './routes/fesya'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as SetPasswordRouteImport } from './routes/set-password'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as WingsRouteImport } from './routes/wings'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin-messages'
+import { Route as AuthenticatedForumRouteImport } from './routes/_authenticated/forum'
+import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AuthenticatedPortalIndexRouteImport } from './routes/_authenticated/portal.index'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as AuthenticatedPortalUnitsRouteImport } from './routes/_authenticated/portal.units'
-import { Route as AuthenticatedPortalPoliciesRouteImport } from './routes/_authenticated/portal.policies'
-import { Route as AuthenticatedPortalMessagesRouteImport } from './routes/_authenticated/portal.messages'
-import { Route as AuthenticatedPortalMembersRouteImport } from './routes/_authenticated/portal.members'
-import { Route as AuthenticatedPortalIdRouteImport } from './routes/_authenticated/portal.id'
+import { Route as AuthenticatedPortalActivityRouteImport } from './routes/_authenticated/portal.activity'
 import { Route as AuthenticatedPortalForumRouteImport } from './routes/_authenticated/portal.forum'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as AuthenticatedPortalIdRouteImport } from './routes/_authenticated/portal.id'
+import { Route as AuthenticatedPortalMembersRouteImport } from './routes/_authenticated/portal.members'
+import { Route as AuthenticatedPortalMessagesRouteImport } from './routes/_authenticated/portal.messages'
+import { Route as AuthenticatedPortalPoliciesRouteImport } from './routes/_authenticated/portal.policies'
+import { Route as AuthenticatedPortalUnitsRouteImport } from './routes/_authenticated/portal.units'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 
-const WingsRoute = WingsRouteImport.update({
-  id: '/wings',
-  path: '/wings',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SetPasswordRoute = SetPasswordRouteImport.update({
-  id: '/set-password',
-  path: '/set-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MembershipRoute = MembershipRouteImport.update({
-  id: '/membership',
-  path: '/membership',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FesyaRoute = FesyaRouteImport.update({
-  id: '/fesya',
-  path: '/fesya',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeswaRoute = FeswaRouteImport.update({
-  id: '/feswa',
-  path: '/feswa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeaRoute = FeaRouteImport.update({
-  id: '/fea',
-  path: '/fea',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutFounderRoute = AboutFounderRouteImport.update({
-  id: '/about-founder',
-  path: '/about-founder',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -100,28 +55,69 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const AboutFounderRoute = AboutFounderRouteImport.update({
+  id: '/about-founder',
+  path: '/about-founder',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
+const FeaRoute = FeaRouteImport.update({
+  id: '/fea',
+  path: '/fea',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
-  id: '/portal',
-  path: '/portal',
+const FeswaRoute = FeswaRouteImport.update({
+  id: '/feswa',
+  path: '/feswa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FesyaRoute = FesyaRouteImport.update({
+  id: '/fesya',
+  path: '/fesya',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembershipRoute = MembershipRouteImport.update({
+  id: '/membership',
+  path: '/membership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetPasswordRoute = SetPasswordRouteImport.update({
+  id: '/set-password',
+  path: '/set-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WingsRoute = WingsRouteImport.update({
+  id: '/wings',
+  path: '/wings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedForumRoute = AuthenticatedForumRouteImport.update({
-  id: '/forum',
-  path: '/forum',
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminMessagesRoute =
@@ -130,15 +126,20 @@ const AuthenticatedAdminMessagesRoute =
     path: '/admin-messages',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedForumRoute = AuthenticatedForumRouteImport.update({
+  id: '/forum',
+  path: '/forum',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
-  id: '/account',
-  path: '/account',
+const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedPortalIndexRoute =
   AuthenticatedPortalIndexRouteImport.update({
@@ -146,21 +147,27 @@ const AuthenticatedPortalIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedPortalUnitsRoute =
-  AuthenticatedPortalUnitsRouteImport.update({
-    id: '/units',
-    path: '/units',
+const AuthenticatedPortalActivityRoute =
+  AuthenticatedPortalActivityRouteImport.update({
+    id: '/activity',
+    path: '/activity',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
-const AuthenticatedPortalPoliciesRoute =
-  AuthenticatedPortalPoliciesRouteImport.update({
-    id: '/policies',
-    path: '/policies',
+const AuthenticatedPortalForumRoute =
+  AuthenticatedPortalForumRouteImport.update({
+    id: '/forum',
+    path: '/forum',
+    getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const AuthenticatedPortalIdRoute = AuthenticatedPortalIdRouteImport.update({
+  id: '/id',
+  path: '/id',
+  getParentRoute: () => AuthenticatedPortalRoute,
+} as any)
+const AuthenticatedPortalMembersRoute =
+  AuthenticatedPortalMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
 const AuthenticatedPortalMessagesRoute =
@@ -169,33 +176,33 @@ const AuthenticatedPortalMessagesRoute =
     path: '/messages',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
-const AuthenticatedPortalMembersRoute =
-  AuthenticatedPortalMembersRouteImport.update({
-    id: '/members',
-    path: '/members',
+const AuthenticatedPortalPoliciesRoute =
+  AuthenticatedPortalPoliciesRouteImport.update({
+    id: '/policies',
+    path: '/policies',
     getParentRoute: () => AuthenticatedPortalRoute,
   } as any)
-const AuthenticatedPortalIdRoute = AuthenticatedPortalIdRouteImport.update({
-  id: '/id',
-  path: '/id',
-  getParentRoute: () => AuthenticatedPortalRoute,
-} as any)
-const AuthenticatedPortalForumRoute =
-  AuthenticatedPortalForumRouteImport.update({
-    id: '/forum',
-    path: '/forum',
+const AuthenticatedPortalUnitsRoute =
+  AuthenticatedPortalUnitsRouteImport.update({
+    id: '/units',
+    path: '/units',
     getParentRoute: () => AuthenticatedPortalRoute,
+  } as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
     path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailTransactionalPreviewRoute =
-  LovableEmailTransactionalPreviewRouteImport.update({
-    id: '/lovable/email/transactional/preview',
-    path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -219,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/forum': typeof AuthenticatedForumRoute
   '/portal': typeof AuthenticatedPortalRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/portal/activity': typeof AuthenticatedPortalActivityRoute
   '/portal/forum': typeof AuthenticatedPortalForumRoute
   '/portal/id': typeof AuthenticatedPortalIdRoute
   '/portal/members': typeof AuthenticatedPortalMembersRoute
@@ -249,6 +257,7 @@ export interface FileRoutesByTo {
   '/admin-messages': typeof AuthenticatedAdminMessagesRoute
   '/forum': typeof AuthenticatedForumRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/portal/activity': typeof AuthenticatedPortalActivityRoute
   '/portal/forum': typeof AuthenticatedPortalForumRoute
   '/portal/id': typeof AuthenticatedPortalIdRoute
   '/portal/members': typeof AuthenticatedPortalMembersRoute
@@ -282,6 +291,7 @@ export interface FileRoutesById {
   '/_authenticated/forum': typeof AuthenticatedForumRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/_authenticated/portal/activity': typeof AuthenticatedPortalActivityRoute
   '/_authenticated/portal/forum': typeof AuthenticatedPortalForumRoute
   '/_authenticated/portal/id': typeof AuthenticatedPortalIdRoute
   '/_authenticated/portal/members': typeof AuthenticatedPortalMembersRoute
@@ -315,6 +325,7 @@ export interface FileRouteTypes {
     | '/forum'
     | '/portal'
     | '/email/unsubscribe'
+    | '/portal/activity'
     | '/portal/forum'
     | '/portal/id'
     | '/portal/members'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/admin-messages'
     | '/forum'
     | '/email/unsubscribe'
+    | '/portal/activity'
     | '/portal/forum'
     | '/portal/id'
     | '/portal/members'
@@ -377,6 +389,7 @@ export interface FileRouteTypes {
     | '/_authenticated/forum'
     | '/_authenticated/portal'
     | '/email/unsubscribe'
+    | '/_authenticated/portal/activity'
     | '/_authenticated/portal/forum'
     | '/_authenticated/portal/id'
     | '/_authenticated/portal/members'
@@ -412,88 +425,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/wings': {
-      id: '/wings'
-      path: '/wings'
-      fullPath: '/wings'
-      preLoaderRoute: typeof WingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/set-password': {
-      id: '/set-password'
-      path: '/set-password'
-      fullPath: '/set-password'
-      preLoaderRoute: typeof SetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/membership': {
-      id: '/membership'
-      path: '/membership'
-      fullPath: '/membership'
-      preLoaderRoute: typeof MembershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fesya': {
-      id: '/fesya'
-      path: '/fesya'
-      fullPath: '/fesya'
-      preLoaderRoute: typeof FesyaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feswa': {
-      id: '/feswa'
-      path: '/feswa'
-      fullPath: '/feswa'
-      preLoaderRoute: typeof FeswaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fea': {
-      id: '/fea'
-      path: '/fea'
-      fullPath: '/fea'
-      preLoaderRoute: typeof FeaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about-founder': {
-      id: '/about-founder'
-      path: '/about-founder'
-      fullPath: '/about-founder'
-      preLoaderRoute: typeof AboutFounderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -503,39 +439,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+    '/about-founder': {
+      id: '/about-founder'
+      path: '/about-founder'
+      fullPath: '/about-founder'
+      preLoaderRoute: typeof AboutFounderRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/portal': {
-      id: '/_authenticated/portal'
-      path: '/portal'
-      fullPath: '/portal'
-      preLoaderRoute: typeof AuthenticatedPortalRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/forum': {
-      id: '/_authenticated/forum'
-      path: '/forum'
-      fullPath: '/forum'
-      preLoaderRoute: typeof AuthenticatedForumRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/fea': {
+      id: '/fea'
+      path: '/fea'
+      fullPath: '/fea'
+      preLoaderRoute: typeof FeaRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin-messages': {
-      id: '/_authenticated/admin-messages'
-      path: '/admin-messages'
-      fullPath: '/admin-messages'
-      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
+    '/feswa': {
+      id: '/feswa'
+      path: '/feswa'
+      fullPath: '/feswa'
+      preLoaderRoute: typeof FeswaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fesya': {
+      id: '/fesya'
+      path: '/fesya'
+      fullPath: '/fesya'
+      preLoaderRoute: typeof FesyaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/membership': {
+      id: '/membership'
+      path: '/membership'
+      fullPath: '/membership'
+      preLoaderRoute: typeof MembershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/set-password': {
+      id: '/set-password'
+      path: '/set-password'
+      fullPath: '/set-password'
+      preLoaderRoute: typeof SetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wings': {
+      id: '/wings'
+      path: '/wings'
+      fullPath: '/wings'
+      preLoaderRoute: typeof WingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin': {
@@ -545,12 +537,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/account': {
-      id: '/_authenticated/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+    '/_authenticated/admin-messages': {
+      id: '/_authenticated/admin-messages'
+      path: '/admin-messages'
+      fullPath: '/admin-messages'
+      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/forum': {
+      id: '/_authenticated/forum'
+      path: '/forum'
+      fullPath: '/forum'
+      preLoaderRoute: typeof AuthenticatedForumRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portal': {
+      id: '/_authenticated/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof AuthenticatedPortalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/portal/': {
       id: '/_authenticated/portal/'
@@ -559,46 +572,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalIndexRouteImport
       parentRoute: typeof AuthenticatedPortalRoute
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/portal/units': {
-      id: '/_authenticated/portal/units'
-      path: '/units'
-      fullPath: '/portal/units'
-      preLoaderRoute: typeof AuthenticatedPortalUnitsRouteImport
-      parentRoute: typeof AuthenticatedPortalRoute
-    }
-    '/_authenticated/portal/policies': {
-      id: '/_authenticated/portal/policies'
-      path: '/policies'
-      fullPath: '/portal/policies'
-      preLoaderRoute: typeof AuthenticatedPortalPoliciesRouteImport
-      parentRoute: typeof AuthenticatedPortalRoute
-    }
-    '/_authenticated/portal/messages': {
-      id: '/_authenticated/portal/messages'
-      path: '/messages'
-      fullPath: '/portal/messages'
-      preLoaderRoute: typeof AuthenticatedPortalMessagesRouteImport
-      parentRoute: typeof AuthenticatedPortalRoute
-    }
-    '/_authenticated/portal/members': {
-      id: '/_authenticated/portal/members'
-      path: '/members'
-      fullPath: '/portal/members'
-      preLoaderRoute: typeof AuthenticatedPortalMembersRouteImport
-      parentRoute: typeof AuthenticatedPortalRoute
-    }
-    '/_authenticated/portal/id': {
-      id: '/_authenticated/portal/id'
-      path: '/id'
-      fullPath: '/portal/id'
-      preLoaderRoute: typeof AuthenticatedPortalIdRouteImport
+    '/_authenticated/portal/activity': {
+      id: '/_authenticated/portal/activity'
+      path: '/activity'
+      fullPath: '/portal/activity'
+      preLoaderRoute: typeof AuthenticatedPortalActivityRouteImport
       parentRoute: typeof AuthenticatedPortalRoute
     }
     '/_authenticated/portal/forum': {
@@ -608,11 +586,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalForumRouteImport
       parentRoute: typeof AuthenticatedPortalRoute
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+    '/_authenticated/portal/id': {
+      id: '/_authenticated/portal/id'
+      path: '/id'
+      fullPath: '/portal/id'
+      preLoaderRoute: typeof AuthenticatedPortalIdRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/members': {
+      id: '/_authenticated/portal/members'
+      path: '/members'
+      fullPath: '/portal/members'
+      preLoaderRoute: typeof AuthenticatedPortalMembersRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/messages': {
+      id: '/_authenticated/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof AuthenticatedPortalMessagesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/policies': {
+      id: '/_authenticated/portal/policies'
+      path: '/policies'
+      fullPath: '/portal/policies'
+      preLoaderRoute: typeof AuthenticatedPortalPoliciesRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/_authenticated/portal/units': {
+      id: '/_authenticated/portal/units'
+      path: '/units'
+      fullPath: '/portal/units'
+      preLoaderRoute: typeof AuthenticatedPortalUnitsRouteImport
+      parentRoute: typeof AuthenticatedPortalRoute
+    }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/preview': {
@@ -622,10 +635,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedPortalRouteChildren {
+  AuthenticatedPortalActivityRoute: typeof AuthenticatedPortalActivityRoute
   AuthenticatedPortalForumRoute: typeof AuthenticatedPortalForumRoute
   AuthenticatedPortalIdRoute: typeof AuthenticatedPortalIdRoute
   AuthenticatedPortalMembersRoute: typeof AuthenticatedPortalMembersRoute
@@ -636,6 +657,7 @@ interface AuthenticatedPortalRouteChildren {
 }
 
 const AuthenticatedPortalRouteChildren: AuthenticatedPortalRouteChildren = {
+  AuthenticatedPortalActivityRoute: AuthenticatedPortalActivityRoute,
   AuthenticatedPortalForumRoute: AuthenticatedPortalForumRoute,
   AuthenticatedPortalIdRoute: AuthenticatedPortalIdRoute,
   AuthenticatedPortalMembersRoute: AuthenticatedPortalMembersRoute,

@@ -3,7 +3,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Fragment, useMemo, useState } from "react";
 import { Users } from "lucide-react";
-import { getAllMembers, getMyRole, approveMember, rejectMember } from "@/lib/members.functions";
+import { getAllMembers, getMyRole, approveMember, rejectMember, assignMemberBranch } from "@/lib/members.functions";
+import { listUnits } from "@/lib/forum.functions";
 import { planNameShort } from "@/lib/plans";
 import { EmptyState, LoadingRows } from "@/components/portal/empty-state";
 
@@ -17,7 +18,14 @@ export const Route = createFileRoute("/_authenticated/portal/members")({
   component: MembersPage,
 });
 
-type Tab = "pending" | "approved" | "rejected" | "all";
+type Tab = "pending" | "approved" | "expiring" | "rejected" | "all";
+const EXPIRING_WINDOW_DAYS = 30;
+
+function isExpiringSoon(r: { status: string; expires_at: string | null }) {
+  if (r.status !== "approved" || !r.expires_at) return false;
+  const days = (new Date(r.expires_at).getTime() - Date.now()) / (24 * 60 * 60 * 1000);
+  return days >= 0 && days <= EXPIRING_WINDOW_DAYS;
+}
 type SortKey = "name" | "joined" | "plan" | "state";
 
 const PAGE_SIZE = 25;
@@ -27,7 +35,11 @@ function MembersPage() {
   const fetchAll = useServerFn(getAllMembers);
   const approve = useServerFn(approveMember);
   const reject = useServerFn(rejectMember);
+  const assignBranch = useServerFn(assignMemberBranch);
+  const fetchUnits = useServerFn(listUnits);
   const q = useQuery({ queryKey: ["all-members"], queryFn: () => fetchAll() });
+  const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
+  const branches = (unitsQ.data ?? []).filter((u) => u.level === "branch");
 
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<Tab>("pending");
@@ -45,6 +57,7 @@ function MembersPage() {
     total: rows.length,
     pending: rows.filter((r) => r.status === "pending").length,
     approved: rows.filter((r) => r.status === "approved").length,
+    expiring: rows.filter(isExpiringSoon).length,
     rejected: rows.filter((r) => r.status === "rejected").length,
     thisMonth: rows.filter((r) => {
       const d = new Date(r.joined_at);
@@ -56,7 +69,7 @@ function MembersPage() {
   const filtered = useMemo(() => {
     const s = search.trim().toLowerCase();
     return rows
-      .filter((r) => (tab === "all" ? true : r.status === tab))
+      .filter((r) => (tab === "all" ? true : tab === "expiring" ? isExpiringSoon(r) : r.status === tab))
       .filter((r) => !s || [r.full_name, r.email, r.member_code, r.mobile, r.district, r.state]
         .filter(Boolean).some((v) => String(v).toLowerCase().includes(s)));
   }, [rows, search, tab]);
@@ -107,6 +120,16 @@ function MembersPage() {
     finally { setBusyId(null); }
   }
 
+  async function handleAssignBranch(id: string, unitId: string) {
+    setBusyId(id); setErr(null); setMsg(null);
+    try {
+      await assignBranch({ data: { memberId: id, unitId: unitId || null } });
+      setMsg("Branch updated.");
+      await qc.invalidateQueries({ queryKey: ["all-members"] });
+    } catch (e) { setErr((e as Error).message); }
+    finally { setBusyId(null); }
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
       <div className="flex items-baseline justify-between flex-wrap gap-3">
@@ -124,16 +147,17 @@ function MembersPage() {
       </div>
 
       {/* Stat cards */}
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
         <Stat label="Total" value={counts.total} />
         <Stat label="Pending" value={counts.pending} tone="amber" />
         <Stat label="Approved" value={counts.approved} tone="green" />
+        <Stat label="Expiring soon" value={counts.expiring} tone="amber" />
         <Stat label="Joined this month" value={counts.thisMonth} />
       </div>
 
       {/* Tabs */}
       <div className="mt-6 flex flex-wrap gap-2">
-        {(["pending", "approved", "rejected", "all"] as Tab[]).map((t) => (
+        {(["pending", "approved", "expiring", "rejected", "all"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => { setTab(t); setPage(0); }}
@@ -207,7 +231,24 @@ function MembersPage() {
                           <Detail label="Address" value={m.address} className="col-span-2" />
                           <Detail label="Town" value={m.town} />
                           <Detail label="District" value={m.district} />
+                          <Detail label="Expires" value={m.expires_at ? new Date(m.expires_at).toLocaleDateString() : "Lifetime"} />
                         </div>
+                        {m.status === "approved" && (
+                          <div className="mt-4" onClick={(e) => e.stopPropagation()}>
+                            <p className="text-[10px] uppercase tracking-wider text-brand-ink/40 mb-1">Caucus branch</p>
+                            <select
+                              defaultValue={m.branch_unit_id ?? ""}
+                              disabled={busyId === m.id}
+                              onChange={(e) => handleAssignBranch(m.id, e.target.value)}
+                              className="border border-brand-ink/20 rounded-md px-3 py-1.5 text-xs bg-white"
+                            >
+                              <option value="">Unassigned</option>
+                              {branches.map((b) => (
+                                <option key={b.id} value={b.id}>{b.name}</option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   )}

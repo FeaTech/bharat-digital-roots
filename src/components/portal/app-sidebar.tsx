@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { IdCard, MessagesSquare, Users, Mail, ScrollText, Network, LayoutDashboard, LogOut } from "lucide-react";
+import { IdCard, MessagesSquare, Users, Mail, ScrollText, Network, LayoutDashboard, LogOut, History } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
@@ -49,6 +49,7 @@ export function AppSidebar() {
   const senate: Item[] = [];
   if (isSenate) senate.push({ title: "Policies", url: "/portal/policies", icon: ScrollText });
   if (isSenatePresident || isCaucusAdmin) senate.push({ title: "Units", url: "/portal/units", icon: Network });
+  if (isAdmin || isSenate) senate.push({ title: "Activity Log", url: "/portal/activity", icon: History });
 
   async function handleSignOut() {
     await qc.cancelQueries();

@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { IdCard, MessagesSquare, Users, ScrollText, Network } from "lucide-react";
-import { getMyRoleContext, listPosts } from "@/lib/forum.functions";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { IdCard, MessagesSquare, Users, ScrollText, Network, Crown } from "lucide-react";
+import { getMyRoleContext, listPosts, listUnits, claimSenatePresident } from "@/lib/forum.functions";
 import { LoadingCard } from "@/components/portal/empty-state";
 
 export const Route = createFileRoute("/_authenticated/portal/")({
@@ -11,12 +12,27 @@ export const Route = createFileRoute("/_authenticated/portal/")({
 });
 
 function PortalHome() {
+  const qc = useQueryClient();
   const fetchCtx = useServerFn(getMyRoleContext);
   const fetchPosts = useServerFn(listPosts);
+  const fetchUnits = useServerFn(listUnits);
+  const claim = useServerFn(claimSenatePresident);
   const ctxQ = useQuery({ queryKey: ["forum-ctx"], queryFn: () => fetchCtx() });
   const postsQ = useQuery({ queryKey: ["posts"], queryFn: () => fetchPosts({ data: {} }) });
+  const unitsQ = useQuery({ queryKey: ["units"], queryFn: () => fetchUnits() });
+  const [claiming, setClaiming] = useState(false);
+  const [claimErr, setClaimErr] = useState<string | null>(null);
 
   const ctx = ctxQ.data;
+
+  async function handleClaim() {
+    setClaiming(true); setClaimErr(null);
+    try {
+      await claim();
+      await qc.invalidateQueries({ queryKey: ["forum-ctx"] });
+    } catch (e) { setClaimErr((e as Error).message); }
+    finally { setClaiming(false); }
+  }
 
   if (ctxQ.isLoading || !ctx) {
     return (
@@ -37,8 +53,10 @@ function PortalHome() {
 
   const recentPosts = (postsQ.data ?? []).slice(0, 5);
   const totalPosts = postsQ.data?.length ?? 0;
+  const units = unitsQ.data ?? [];
 
   const isCaucusAdmin = ctx.adminAssignments.some((a) => a.unit_id);
+  const showChecklist = ctx.isSenatePresident && units.length === 0 && totalPosts === 0;
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
@@ -49,6 +67,57 @@ function PortalHome() {
       <p className="mt-1 text-brand-ink/60 capitalize">Signed in as {roleLabel}</p>
 
       {/* Onboarding banners */}
+
+      {!ctx.senatePresidentExists && ctx.isAdmin && (
+        <div className="mt-6 rounded-xl border border-brand-saffron/30 bg-brand-saffron/5 p-5 flex items-start gap-4">
+          <Crown className="w-5 h-5 text-brand-saffron shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="font-serif text-lg">No Senate President yet</p>
+            <p className="mt-1 text-sm text-brand-ink/70">
+              As an admin, you can claim this role to start setting up caucus units, appointing other admins, and
+              publishing org-wide posts. This can only be done once.
+            </p>
+            {claimErr && <p className="mt-2 text-sm text-red-600">{claimErr}</p>}
+            <button
+              onClick={handleClaim}
+              disabled={claiming}
+              className="mt-3 bg-brand-saffron text-white text-xs font-semibold px-4 py-2 rounded-full disabled:opacity-60"
+            >
+              {claiming ? "Claiming…" : "Claim Senate President"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showChecklist && (
+        <div className="mt-6 rounded-xl border border-brand-ink/10 p-5 bg-white">
+          <p className="font-serif text-lg">Get your org set up</p>
+          <p className="mt-1 text-sm text-brand-ink/70">Three quick steps to start using the portal.</p>
+          <ol className="mt-4 space-y-3 text-sm">
+            <li className="flex items-start gap-3">
+              <span className="w-5 h-5 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span>
+                <Link to="/portal/units" className="text-brand-green hover:underline font-medium">Add your first caucus unit</Link>
+                {" "}— continent, country, zone, state, district, or branch.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="w-5 h-5 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span>
+                <Link to="/portal/units" className="text-brand-green hover:underline font-medium">Assign an admin</Link>
+                {" "}to a unit so they can manage it.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="w-5 h-5 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span>
+                <Link to="/portal/forum" className="text-brand-green hover:underline font-medium">Publish your first post</Link>
+                {" "}— news, an announcement, or an event.
+              </span>
+            </li>
+          </ol>
+        </div>
+      )}
 
       {ctx.memberCode && !ctx.memberUnitId && (
         <div className="mt-6 rounded-xl border border-brand-ink/10 p-5 bg-white flex items-start gap-4">
