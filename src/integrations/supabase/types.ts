@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.15"
   }
   public: {
     Tables: {
@@ -45,36 +45,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      audit_log: {
-        Row: {
-          action: string
-          actor_id: string | null
-          created_at: string
-          detail: Json
-          id: string
-          target_id: string | null
-          target_type: string
-        }
-        Insert: {
-          action: string
-          actor_id?: string | null
-          created_at?: string
-          detail?: Json
-          id?: string
-          target_id?: string | null
-          target_type: string
-        }
-        Update: {
-          action?: string
-          actor_id?: string | null
-          created_at?: string
-          detail?: Json
-          id?: string
-          target_id?: string | null
-          target_type?: string
-        }
-        Relationships: []
       }
       contact_messages: {
         Row: {
@@ -171,32 +141,6 @@ export type Database = {
           used_at?: string | null
         }
         Relationships: []
-      }
-      event_rsvps: {
-        Row: {
-          created_at: string
-          post_id: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          post_id: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          post_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "event_rsvps_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       geographic_units: {
         Row: {
@@ -481,7 +425,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      claim_senate_president: { Args: Record<PropertyKey, never>; Returns: undefined }
       generate_member_code: { Args: { _plan: string }; Returns: string }
       has_role: {
         Args: {
@@ -492,7 +435,6 @@ export type Database = {
       }
       is_senate: { Args: { _uid: string }; Returns: boolean }
       is_senate_president: { Args: { _uid: string }; Returns: boolean }
-      senate_president_exists: { Args: Record<PropertyKey, never>; Returns: boolean }
       unit_ancestors: {
         Args: { _unit_id: string }
         Returns: {
