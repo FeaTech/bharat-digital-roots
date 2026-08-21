@@ -46,6 +46,36 @@ export type Database = {
           },
         ]
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          detail: Json
+          id: string
+          target_id: string | null
+          target_type: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          target_id?: string | null
+          target_type: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          id?: string
+          target_id?: string | null
+          target_type?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           address: string | null
@@ -141,6 +171,32 @@ export type Database = {
           used_at?: string | null
         }
         Relationships: []
+      }
+      event_rsvps: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       geographic_units: {
         Row: {
@@ -425,6 +481,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_senate_president: { Args: never; Returns: undefined }
       generate_member_code: { Args: { _plan: string }; Returns: string }
       has_role: {
         Args: {
@@ -435,6 +492,7 @@ export type Database = {
       }
       is_senate: { Args: { _uid: string }; Returns: boolean }
       is_senate_president: { Args: { _uid: string }; Returns: boolean }
+      senate_president_exists: { Args: never; Returns: boolean }
       unit_ancestors: {
         Args: { _unit_id: string }
         Returns: {
